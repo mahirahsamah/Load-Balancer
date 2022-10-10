@@ -1,25 +1,39 @@
 #include <iostream>
 #include "classes.h"
+#include <cstdlib>
+
 using namespace std;
 
-//const int SIZE = 10000;
+string generate_IP_in(){
+    srand(time(NULL));
+    string one = to_string(0 + rand() % 255);
+    string two = to_string(0 + rand() % 255);
+    string three = to_string(0 + rand() % 255);
+    string four = to_string(0 + rand() % 255);
 
-// Request class
-/*class request{
-    string ip_in;
-    string ip_out;
-    int time;
+    return one + '.' + two + '.' + three + '.' + four;
+}
 
-    public:
-        request(string iin, string iout, int t);
-        void print_request();
-        bool is_request();
-};*/
+string generate_IP_out(){
+    srand(49 * time(NULL));
+    string one = to_string(0 + rand() % 255);
+    string two = to_string(0 + rand() % 255);
+    string three = to_string(0 + rand() % 255);
+    string four = to_string(0 + rand() % 255);
 
-request::request(string iin, string iout, int t){
-    ip_in = iin;
-    ip_out = iout;
-    time = t;
+    return one + '.' + two + '.' + three + '.' + four;
+}
+
+int generate_time(){
+    srand(time(NULL));
+    return (0 + rand() % 61); // the max time a request can be run is 1 minute
+}
+
+request::request(){
+    ip_in = generate_IP_in();
+    ip_out = generate_IP_out();
+    time = generate_time();
+    
 }
 
 string request::print_request(){
@@ -34,27 +48,9 @@ bool request::is_request(){
     return true;
 }
 
-// request_queue class definition start
-
-// Request Queue class to store requests
-/*template <typename X>
-class request_queue{
-    int capacity;
-    int count, front, rear;
-    int *arr;
-
-    public:
-        request_queue(int size = SIZE);
-        X pop();
-        void push(X r);
-        int size();
-        bool is_empty();
-        bool is_full();
-};*/
-
 // reqeust queue constructor
 template <class X>
-request_queue<X>::request_queue(int size)
+queue<X>::queue(int size)
 {
     arr = new X[size];
     capacity = size;
@@ -65,12 +61,12 @@ request_queue<X>::request_queue(int size)
 
 // request_queue pop function
 template <class X>
-X request_queue<X>::pop()
+X queue<X>::pop()
 {
     // check for queue underflow
     if (is_empty())
     {
-        cout << "Cannot pop, request_queue is empty" << endl;
+        cout << "Cannot pop, queue is empty" << endl;
     }
     request r = arr[front];
     string output = "Removing " + r.print_request();
@@ -84,7 +80,7 @@ X request_queue<X>::pop()
 
 // request_queue push function
 template <class X>
-void request_queue<X>::push(X r)
+void queue<X>::push(X item)
 {
     // check for queue overflow
     if (is_full())
@@ -93,33 +89,31 @@ void request_queue<X>::push(X r)
     }
  
     //cout << "Inserting " << r.print_request() << endl;
-    string output = "Inserting " + r.print_request();
+    string output = "Inserting " + item.print_request();
     cout << output << endl;
  
     rear = (rear + 1) % capacity;
-    arr[rear] = r;
+    arr[rear] = item;
     count++;
 }
  
 //function to return the size of the queue
 template <class X>
-int request_queue<X>::size() {
+int queue<X>::size() {
     return count;
 }
  
 //function to check if the queue is empty or not
 template <class X>
-bool request_queue<X>::is_empty() {
+bool queue<X>::is_empty() {
     return (size() == 0);
 }
 
 //function to check if the queue is full or not
 template <class X>
-bool request_queue<X>::is_full() {
+bool queue<X>::is_full() {
     return (size() == capacity);
 }
-
-// request_queue class definition end
 
 // Processor inside web server
 class processor{
@@ -132,6 +126,18 @@ class webserver{
 };
 
 int main(){
-    request r("hi", "bye", 10);
-    cout << r.print_request();
+    
+    queue<request> q(10*2);
+    request r;
+
+    q.push(r);
+
+    if(q.is_empty()){
+        cout << "q is empty"<< endl;
+    }
+    else{
+        cout << "q isnt empty" << endl;
+    }
+
+    return 0;
 }

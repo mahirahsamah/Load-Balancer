@@ -2,7 +2,6 @@
 using namespace std;
 #ifndef CLASSES_H
 #define CLASSES_H
-//#pragma once
 
 const int SIZE = 10000;
 
@@ -12,19 +11,19 @@ class request{
     int time;
 
     public:
-        request(string iin, string iout, int t);
+        request();
         string print_request();
         bool is_request();
 };
 
 template <typename X>
-class request_queue{
+class queue{
     int capacity;
     int count, front, rear;
-    int *arr;
+    X *arr;
 
     public:
-        request_queue(int size = SIZE);
+        queue(int size = SIZE);
         X pop();
         void push(X r);
         int size();
