@@ -20,6 +20,6 @@ int main(){
     cout << "Enter the run time: " << endl;
     cin >> run_time;
 
-    queue<request> q(servers_num * 2);
+    queue<request> q(servers_num * 2); // generating request queue
 
 }

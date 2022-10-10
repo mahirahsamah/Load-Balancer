@@ -1,6 +1,7 @@
 #include <iostream>
 #include "classes.h"
 #include <cstdlib>
+#include <unistd.h>
 
 using namespace std;
 
@@ -29,11 +30,11 @@ int generate_time(){
     return (0 + rand() % 61); // the max time a request can be run is 1 minute
 }
 
+// REQUEST CONSTRUCTOR
 request::request(){
     ip_in = generate_IP_in();
     ip_out = generate_IP_out();
-    time = generate_time();
-    
+    time = generate_time(); 
 }
 
 string request::print_request(){
@@ -48,7 +49,8 @@ bool request::is_request(){
     return true;
 }
 
-// reqeust queue constructor
+
+// REQUEST QUEUE CONSTRUCTOR
 template <class X>
 queue<X>::queue(int size)
 {
@@ -76,6 +78,11 @@ X queue<X>::pop()
     count--;
 
     return arr[front];
+}
+
+template <class X>
+X queue<X>::access(unsigned int idx){
+    return arr[idx];
 }
 
 // request_queue push function
@@ -115,29 +122,104 @@ bool queue<X>::is_full() {
     return (size() == capacity);
 }
 
-// Processor inside web server
-class processor{
 
-};
 
-// Web server class 
-class webserver{
 
-};
+
+
+
+
+// WEB PROCESSOR FUNCTIONS
+webprocessor::webprocessor(){
+    empty = true;
+}
+
+// web processor hold
+void webprocessor::processing(request r){
+
+    // time is in seconds
+    // sleep() returns 0 when the interval is over
+
+    empty = false;
+
+    sleep(r.get_time());
+
+    empty = true;
+    //return empty;
+}
+
+bool webprocessor::is_empty(){
+    return empty;
+}
+
+// WEB SERVER
+template <class X>
+webserver<X>::webserver(int size)
+{
+    arr = new X[size];
+    capacity = size;
+}
+
+template <class X>
+X webserver<X>::access(unsigned int idx){
+    return arr[idx];
+}
+
+//function to check if the queue is empty or not
+template <class X>
+bool webserver<X>::is_empty() {
+    return (size() == 0);
+}
+
+//function to check if the queue is full or not
+template <class X>
+bool webserver<X>::is_full() {
+    return (size() == capacity);
+}
+
+template <class X>
+void webserver<X>::processing(request r){
+
+    // time is in seconds
+    // sleep() returns 0 when the interval is over
+
+    empty_slot = false;
+
+    sleep(r.get_time());
+
+    empty_slot = true;
+    //return empty;
+}
 
 int main(){
     
-    queue<request> q(10*2);
+    // make webserver queue
+    webserver<webprocessor> w(3); // webserver is just a queue that contains webprocessors
+
+    request one;
+    request two;
+    request three;
+
+    cout << two.get_time() << endl;
+
+    w.access(1).processing(two); // TO MAKE A PROCESSOR IN INDEX 1 PROCESS A REQUEST
+
+
+
+    /*
+    queue<request> q(3);
     request r;
+    request t;
+    request s;
 
     q.push(r);
+    q.push(t);
+    q.push(s);
 
-    if(q.is_empty()){
-        cout << "q is empty"<< endl;
-    }
-    else{
-        cout << "q isnt empty" << endl;
-    }
+    cout << t.get_time() << endl;
 
-    return 0;
+    cout << q.access(1).get_time() << endl;
+
+    return 0; */
+    
 }
