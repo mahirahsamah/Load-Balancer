@@ -1,4 +1,5 @@
 #include <string>
+//#include <bits/stdc++.h>
 using namespace std;
 #ifndef CLASSES_H
 #define CLASSES_H
@@ -17,22 +18,12 @@ class request{
         int get_time(){
             return time;
         }
-};
-
-template <typename X>
-class queue{
-    int capacity;
-    int count, front, rear;
-    X *arr;
-
-    public:
-        queue(int size = SIZE);
-        X pop();
-        void push(X r);
-        int size();
-        bool is_empty();
-        bool is_full();
-        X access(unsigned int idx);
+        string get_ip_in(){
+            return ip_in;
+        }
+        string get_ip_out(){
+            return ip_out;
+        }
 };
 
 template <typename X>
@@ -48,18 +39,41 @@ class webserver{
         bool is_empty();
         bool is_full();
         X access(unsigned int idx);
-        void processing(request r);
+        //void processing(request r);
+        int check_next_free_index();
+        int get_size(){
+            return capacity;
+        }
+        void decrement_all_request_time();
 };
 
 class webprocessor{
 
-    bool empty; // to check if a slot is empty
+    bool filled; // to check if a slot is empty
+
+    string ip_in;
+    string ip_out;
+    int time;
 
     public:
-        webprocessor();
-        //void push_request(request r);
+        webprocessor(request r);
         void processing(request r);
-        bool is_empty();
+        bool is_filled(bool e);
+        bool get_filled(){
+            return filled;
+        }
+        int dec_time(){
+            time--;
+            if(time == 0){
+                filled = false;
+            }
+        }
+        void add_request(request r){
+            filled = true;
+            ip_in = r.get_ip_in();
+            ip_out = r.get_ip_out();
+            time = r.get_time();
+        }
 };
 
 #endif

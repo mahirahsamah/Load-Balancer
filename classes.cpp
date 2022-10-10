@@ -1,33 +1,36 @@
 #include <iostream>
 #include "classes.h"
+#include <queue>
 #include <cstdlib>
 #include <unistd.h>
 
-using namespace std;
+using std::cout;
+using std::cin;
+using std::endl;
 
 string generate_IP_in(){
-    srand(time(NULL));
-    string one = to_string(0 + rand() % 255);
-    string two = to_string(0 + rand() % 255);
-    string three = to_string(0 + rand() % 255);
-    string four = to_string(0 + rand() % 255);
+    //srand(time(NULL));
+    string one = to_string(rand() % 256);
+    string two = to_string(rand() % 256);
+    string three = to_string(rand() % 256);
+    string four = to_string(rand() % 256);
 
     return one + '.' + two + '.' + three + '.' + four;
 }
 
 string generate_IP_out(){
-    srand(49 * time(NULL));
-    string one = to_string(0 + rand() % 255);
-    string two = to_string(0 + rand() % 255);
-    string three = to_string(0 + rand() % 255);
-    string four = to_string(0 + rand() % 255);
+    //srand(49 * time(NULL));
+    string one = to_string(rand() % 256);
+    string two = to_string(rand() % 256);
+    string three = to_string(rand() % 256);
+    string four = to_string(rand() % 256);
 
     return one + '.' + two + '.' + three + '.' + four;
 }
 
 int generate_time(){
     srand(time(NULL));
-    return (0 + rand() % 61); // the max time a request can be run is 1 minute
+    return (0 + rand() % 41); // the max time a request can be run is 1 minute
 }
 
 // REQUEST CONSTRUCTOR
@@ -49,107 +52,26 @@ bool request::is_request(){
     return true;
 }
 
-
-// REQUEST QUEUE CONSTRUCTOR
-template <class X>
-queue<X>::queue(int size)
-{
-    arr = new X[size];
-    capacity = size;
-    count = 0;
-    front = 0;
-    rear = -1;
-}
-
-// request_queue pop function
-template <class X>
-X queue<X>::pop()
-{
-    // check for queue underflow
-    if (is_empty())
-    {
-        cout << "Cannot pop, queue is empty" << endl;
-    }
-    request r = arr[front];
-    string output = "Removing " + r.print_request();
-    cout << output << endl;
- 
-    front = (front + 1) % capacity;
-    count--;
-
-    return arr[front];
-}
-
-template <class X>
-X queue<X>::access(unsigned int idx){
-    return arr[idx];
-}
-
-// request_queue push function
-template <class X>
-void queue<X>::push(X item)
-{
-    // check for queue overflow
-    if (is_full())
-    {
-        cout << "Cannot push, queue is full" << endl;
-    }
- 
-    //cout << "Inserting " << r.print_request() << endl;
-    string output = "Inserting " + item.print_request();
-    cout << output << endl;
- 
-    rear = (rear + 1) % capacity;
-    arr[rear] = item;
-    count++;
-}
- 
-//function to return the size of the queue
-template <class X>
-int queue<X>::size() {
-    return count;
-}
- 
-//function to check if the queue is empty or not
-template <class X>
-bool queue<X>::is_empty() {
-    return (size() == 0);
-}
-
-//function to check if the queue is full or not
-template <class X>
-bool queue<X>::is_full() {
-    return (size() == capacity);
-}
-
-
-
-
-
-
-
-
 // WEB PROCESSOR FUNCTIONS
-webprocessor::webprocessor(){
-    empty = true;
+webprocessor::webprocessor(request r){
+    filled = true;
+    ip_in = r.get_ip_in();
+    ip_out = r.get_ip_out();
+    time = r.get_time();
 }
 
 // web processor hold
+/*
 void webprocessor::processing(request r){
 
-    // time is in seconds
-    // sleep() returns 0 when the interval is over
+    r.get_time()--;
+    if(r.get_time() == 0){
+        filled = false;
+    }
+}*/
 
-    empty = false;
-
-    sleep(r.get_time());
-
-    empty = true;
-    //return empty;
-}
-
-bool webprocessor::is_empty(){
-    return empty;
+bool webprocessor::is_filled(bool e){
+    filled = e;
 }
 
 // WEB SERVER
@@ -177,22 +99,28 @@ bool webserver<X>::is_full() {
     return (size() == capacity);
 }
 
+// to find next free web processor
 template <class X>
-void webserver<X>::processing(request r){
-
-    // time is in seconds
-    // sleep() returns 0 when the interval is over
-
-    empty_slot = false;
-
-    sleep(r.get_time());
-
-    empty_slot = true;
-    //return empty;
+int webserver<X>::check_next_free_index(){
+    for(int i =0; i< capacity; i++){
+        if(!arr[i].get_filled()){
+            return i;
+        }
+    }
+    return -1;
 }
 
+template <class X>
+int webserver<X>::decrement_all_request_time(){
+    for(int i = 0; i < capacity; i++{
+        if(arr[i].get_filled){
+            arr[i].dec_time();
+        }
+    }
+}
+
+/*
 int main(){
-    
     // make webserver queue
     webserver<webprocessor> w(3); // webserver is just a queue that contains webprocessors
 
@@ -200,26 +128,14 @@ int main(){
     request two;
     request three;
 
-    cout << two.get_time() << endl;
+    //cout << two.get_time() << endl;
 
-    w.access(1).processing(two); // TO MAKE A PROCESSOR IN INDEX 1 PROCESS A REQUEST
+    w.access(0).processing(two); // TO MAKE A PROCESSOR IN INDEX 1 PROCESS A REQUEST
+    w.access(1).processing(one);
 
+    w.check_next_free_index();
 
-
-    /*
-    queue<request> q(3);
-    request r;
-    request t;
-    request s;
-
-    q.push(r);
-    q.push(t);
-    q.push(s);
-
-    cout << t.get_time() << endl;
-
-    cout << q.access(1).get_time() << endl;
-
-    return 0; */
+    w.access(2).processing(three);
+    return 0;
     
-}
+}*/
