@@ -39,6 +39,11 @@ int main(){
     // create clock cycles
     for(int i = 0; i < run_time; i++){
 
+        if(add_request_time() % 2 == 0){
+            request q;
+            request_q.push(q);
+        }
+
         // check if request queue is empty at any point
         if(request_q.empty()){
             cout << "All requests have been completed... exiting..." << endl;
