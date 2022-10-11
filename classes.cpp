@@ -53,55 +53,38 @@ bool request::is_request(){
 }
 
 // WEB PROCESSOR FUNCTIONS
-webprocessor::webprocessor(request r){
-    filled = true;
-    ip_in = r.get_ip_in();
-    ip_out = r.get_ip_out();
-    time = r.get_time();
+webprocessor::webprocessor(){
+    filled = false;
+    ip_in = "";
+    ip_out = "";
+    time =0 ;
 }
 
-// web processor hold
-/*
-void webprocessor::processing(request r){
-
-    r.get_time()--;
-    if(r.get_time() == 0){
-        filled = false;
-    }
-}*/
-
-bool webprocessor::is_filled(bool e){
+void webprocessor::is_filled(bool e){
     filled = e;
 }
 
 // WEB SERVER
-template <class X>
-webserver<X>::webserver(int size)
+//template <class X>
+webserver::webserver(int size)
 {
-    arr = new X[size];
+    //arr = new webprocessor[size];
     capacity = size;
+    for(int i = 0; i < capacity; i++){
+        //request r;
+        webprocessor w;
+        arr.push_back(w);
+    }
 }
 
-template <class X>
-X webserver<X>::access(unsigned int idx){
+//template <class X>
+webprocessor webserver::access(unsigned int idx){
     return arr[idx];
 }
 
-//function to check if the queue is empty or not
-template <class X>
-bool webserver<X>::is_empty() {
-    return (size() == 0);
-}
-
-//function to check if the queue is full or not
-template <class X>
-bool webserver<X>::is_full() {
-    return (size() == capacity);
-}
-
 // to find next free web processor
-template <class X>
-int webserver<X>::check_next_free_index(){
+//template <class X>
+int webserver::check_next_free_index(){
     for(int i =0; i< capacity; i++){
         if(!arr[i].get_filled()){
             return i;
@@ -110,10 +93,10 @@ int webserver<X>::check_next_free_index(){
     return -1;
 }
 
-template <class X>
-int webserver<X>::decrement_all_request_time(){
-    for(int i = 0; i < capacity; i++{
-        if(arr[i].get_filled){
+//template <class X>
+void webserver::decrement_all_request_time(){
+    for(int i = 0; i < capacity; i++){
+        if(arr[i].get_filled()){
             arr[i].dec_time();
         }
     }

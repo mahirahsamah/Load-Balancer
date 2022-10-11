@@ -31,7 +31,7 @@ int main(){
     }
 
     // create webservers
-    webserver<webprocessor> web_server(servers_num);
+    webserver web_server(servers_num);
 
     int req_time = 0;
     int temp = 0;
@@ -64,4 +64,5 @@ int main(){
         }
         web_server.decrement_all_request_time();
     }
+    return 0;
 }

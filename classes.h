@@ -1,8 +1,10 @@
-#include <string>
-//#include <bits/stdc++.h>
-using namespace std;
 #ifndef CLASSES_H
 #define CLASSES_H
+#include <string>
+#include <vector>
+
+using namespace std;
+
 
 const int SIZE = 10000;
 
@@ -26,27 +28,6 @@ class request{
         }
 };
 
-template <typename X>
-class webserver{
-
-    int capacity;
-    X *arr;
-    bool empty_slot;
-    int size();
-
-    public:
-        webserver(int size = SIZE);
-        bool is_empty();
-        bool is_full();
-        X access(unsigned int idx);
-        //void processing(request r);
-        int check_next_free_index();
-        int get_size(){
-            return capacity;
-        }
-        void decrement_all_request_time();
-};
-
 class webprocessor{
 
     bool filled; // to check if a slot is empty
@@ -56,13 +37,13 @@ class webprocessor{
     int time;
 
     public:
-        webprocessor(request r);
+        webprocessor();
         void processing(request r);
-        bool is_filled(bool e);
+        void is_filled(bool e);
         bool get_filled(){
             return filled;
         }
-        int dec_time(){
+        void dec_time(){
             time--;
             if(time == 0){
                 filled = false;
@@ -74,6 +55,25 @@ class webprocessor{
             ip_out = r.get_ip_out();
             time = r.get_time();
         }
+};
+
+//template <typename X>
+class webserver{
+
+    int capacity;
+    std::vector<webprocessor> arr;
+    //std::vector<webprocessor> arr;
+    bool empty_slot;
+    int size();
+
+    public:
+        webserver(int size = SIZE);
+        webprocessor access(unsigned int idx);
+        int check_next_free_index();
+        int get_size(){
+            return capacity;
+        }
+        void decrement_all_request_time();
 };
 
 #endif
