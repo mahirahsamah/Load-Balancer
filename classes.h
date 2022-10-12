@@ -43,10 +43,17 @@ class webprocessor{
         bool get_filled(){
             return filled;
         }
-        void dec_time(){
+        int get_time(){
+            return time;
+        }
+        void dec_time(int clock_cycle, int idx){
+            //cout << "at dec_time" << endl;
             time--;
+            //cout << time << endl;
             if(time == 0){
                 filled = false;
+                // cout here
+                cout << "At " << clock_cycle << ", Processor " << std::to_string(idx) << " completed request from " << ip_in << " to " << ip_out << endl;
             }
         }
         void add_request(request r){
@@ -54,6 +61,7 @@ class webprocessor{
             ip_in = r.get_ip_in();
             ip_out = r.get_ip_out();
             time = r.get_time();
+            //cout << filled << endl;
         }
 };
 
@@ -68,12 +76,13 @@ class webserver{
 
     public:
         webserver(int size = SIZE);
-        webprocessor access(unsigned int idx);
+        webprocessor* access(unsigned int idx);
         int check_next_free_index();
         int get_size(){
             return capacity;
         }
-        void decrement_all_request_time();
+        void decrement_all_request_time(int clock_cycle);
+        bool are_all_processors_empty();
 };
 
 #endif

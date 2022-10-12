@@ -39,35 +39,32 @@ int main(){
     // create clock cycles
     for(int i = 0; i < run_time; i++){
 
+        /*for(int k = 0; k < servers_num; k++){
+            cout << web_server.access(k)->get_time() << " ";
+        }
+        cout << endl;*/
+
         if(add_request_time() % 2 == 0){
             request q;
             request_q.push(q);
         }
 
         // check if request queue is empty at any point
-        if(request_q.empty()){
+        if(request_q.empty() && web_server.are_all_processors_empty()){
             cout << "All requests have been completed... exiting..." << endl;
             break;
         }
 
         int free_index = web_server.check_next_free_index();
         if(free_index == -1){
-            cout << "Wait, the web server is full" << endl;
+            //cout << "Wait, the web server is full" << endl;
         }
         else{
-
-            //web_server.access(free_index).processing(request_q.front());
-            web_server.access(free_index).add_request(request_q.front());
+            web_server.access(free_index)->add_request(request_q.front());
             request_q.pop();
-            //req_time = request_q.front().get_time();
-            //web_server.access(free_index).is_filled(true);
-
-            /*if(temp == req_time){
-                web_server.access(free_index).is_filled(false);
-            }*/
-
         }
-        web_server.decrement_all_request_time();
+    
+        web_server.decrement_all_request_time(i);
     }
     return 0;
 }

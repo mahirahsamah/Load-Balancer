@@ -29,7 +29,7 @@ string generate_IP_out(){
 }
 
 int generate_time(){
-    srand(time(NULL));
+    //srand(time(NULL));
     return (0 + rand() % 41); // the max time a request can be run is 1 minute
 }
 
@@ -38,6 +38,7 @@ request::request(){
     ip_in = generate_IP_in();
     ip_out = generate_IP_out();
     time = generate_time(); 
+    //cout << time << endl;
 }
 
 string request::print_request(){
@@ -58,6 +59,7 @@ webprocessor::webprocessor(){
     ip_in = "";
     ip_out = "";
     time =0 ;
+    //cout << filled << endl;
 }
 
 void webprocessor::is_filled(bool e){
@@ -78,8 +80,8 @@ webserver::webserver(int size)
 }
 
 //template <class X>
-webprocessor webserver::access(unsigned int idx){
-    return arr[idx];
+webprocessor* webserver::access(unsigned int idx){
+    return &arr[idx];
 }
 
 // to find next free web processor
@@ -94,12 +96,21 @@ int webserver::check_next_free_index(){
 }
 
 //template <class X>
-void webserver::decrement_all_request_time(){
+void webserver::decrement_all_request_time(int c){
     for(int i = 0; i < capacity; i++){
         if(arr[i].get_filled()){
-            arr[i].dec_time();
+            arr[i].dec_time(c, i);
         }
     }
+}
+
+bool webserver::are_all_processors_empty(){
+    for(int i = 0; i< capacity; i++){
+        if(arr[i].get_filled()){
+            return false;
+        }
+    }
+    return true;
 }
 
 /*
