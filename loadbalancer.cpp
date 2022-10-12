@@ -19,14 +19,17 @@ int add_request_time(){
 
 int main(){
 
-    int servers_num;
+    /*int servers_num;
     int run_time;
 
     cout << "Enter the number of servers: ";
     cin >> servers_num;
 
     cout << "Enter the run time: ";
-    cin >> run_time;
+    cin >> run_time;*/
+
+    int servers_num = 10;
+    int run_time = 100;
 
     // create request queue
     queue<request> request_q;
