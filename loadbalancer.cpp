@@ -1,12 +1,19 @@
 #include <iostream>
 #include "classes.h"
 #include <queue>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 int add_request_time(){
-    srand(time(NULL));
-    return (1 + rand() % 60); // the max time a request can be run is 1 minute
+    /*srand(time(NULL));
+    return (1 + rand() % 60);*/ // the max time a request can be run is 1 minute
+
+    //int randomBit = rand() % 2;
+    //return randomBit;
+
+    return (5 + ( std::rand() % ( 1001 ) ));
 }
 
 
@@ -36,15 +43,19 @@ int main(){
     int req_time = 0;
     int temp = 0;
 
+    high_resolution_clock::time_point start = high_resolution_clock::now();
+
+    cout << "Starting queue size: " << request_q.size() << endl;
+
     // create clock cycles
     for(int i = 0; i < run_time; i++){
 
         /*for(int k = 0; k < servers_num; k++){
             cout << web_server.access(k)->get_time() << " ";
         }
-        cout << endl;*/
+        cout << endl; */
 
-        if(add_request_time() % 2 == 0){
+        if(add_request_time() %3 == 0 ){
             request q;
             request_q.push(q);
         }
@@ -66,5 +77,13 @@ int main(){
     
         web_server.decrement_all_request_time(i);
     }
+    high_resolution_clock::time_point end = high_resolution_clock::now();
+
+    cout << "Ending queue size: " << request_q.size() << endl;
+    cout << "Range of task times: 5 to 60 cycles" << endl;
+
+    auto duration = (end - start).count();
+    cout << "Time taken: " << duration << endl;
+
     return 0;
 }

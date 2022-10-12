@@ -51,6 +51,7 @@ class webprocessor{
             time--;
             //cout << time << endl;
             if(time == 0){
+                //cout << "at time=0" << endl;
                 filled = false;
                 // cout here
                 cout << "At " << clock_cycle << ", Processor " << std::to_string(idx) << " completed request from " << ip_in << " to " << ip_out << endl;
@@ -68,18 +69,18 @@ class webprocessor{
 //template <typename X>
 class webserver{
 
-    int capacity;
+    //int capacity;
     std::vector<webprocessor> arr;
     //std::vector<webprocessor> arr;
     bool empty_slot;
-    int size();
+    //int size();
 
     public:
         webserver(int size = SIZE);
         webprocessor* access(unsigned int idx);
         int check_next_free_index();
         int get_size(){
-            return capacity;
+            return arr.size();
         }
         void decrement_all_request_time(int clock_cycle);
         bool are_all_processors_empty();

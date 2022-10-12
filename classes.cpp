@@ -30,7 +30,7 @@ string generate_IP_out(){
 
 int generate_time(){
     //srand(time(NULL));
-    return (0 + rand() % 41); // the max time a request can be run is 1 minute
+    return (5 + ( std::rand() % ( 64 - 5 + 1 ) )); // the max time a request can be run is 1 minute
 }
 
 // REQUEST CONSTRUCTOR
@@ -68,11 +68,11 @@ void webprocessor::is_filled(bool e){
 
 // WEB SERVER
 //template <class X>
-webserver::webserver(int size)
+webserver::webserver(int sz)
 {
     //arr = new webprocessor[size];
-    capacity = size;
-    for(int i = 0; i < capacity; i++){
+    //capacity = size;
+    for(int i = 0; i < sz; i++){
         //request r;
         webprocessor w;
         arr.push_back(w);
@@ -87,7 +87,7 @@ webprocessor* webserver::access(unsigned int idx){
 // to find next free web processor
 //template <class X>
 int webserver::check_next_free_index(){
-    for(int i =0; i< capacity; i++){
+    for(int i =0; i< arr.size(); i++){
         if(!arr[i].get_filled()){
             return i;
         }
@@ -97,7 +97,7 @@ int webserver::check_next_free_index(){
 
 //template <class X>
 void webserver::decrement_all_request_time(int c){
-    for(int i = 0; i < capacity; i++){
+    for(int i = 0; i < arr.size(); i++){
         if(arr[i].get_filled()){
             arr[i].dec_time(c, i);
         }
@@ -105,7 +105,7 @@ void webserver::decrement_all_request_time(int c){
 }
 
 bool webserver::are_all_processors_empty(){
-    for(int i = 0; i< capacity; i++){
+    for(int i = 0; i< arr.size(); i++){
         if(arr[i].get_filled()){
             return false;
         }
@@ -117,18 +117,13 @@ bool webserver::are_all_processors_empty(){
 int main(){
     // make webserver queue
     webserver<webprocessor> w(3); // webserver is just a queue that contains webprocessors
-
     request one;
     request two;
     request three;
-
     //cout << two.get_time() << endl;
-
     w.access(0).processing(two); // TO MAKE A PROCESSOR IN INDEX 1 PROCESS A REQUEST
     w.access(1).processing(one);
-
     w.check_next_free_index();
-
     w.access(2).processing(three);
     return 0;
     
