@@ -102,7 +102,7 @@ int webprocessor::get_time(){
     return time;
 }
 
-/// @brief Webprocessor dec_time() function decrements the time of the Request that is currently in the Webprocessor.
+/// @brief Webprocessor dec_time(int clock_cycle, int idx) function decrements the time of the Request that is currently in the Webprocessor.
 ///
 /// Decrements the time of the Request that is currently in the Webprocessor. This function is called at each clock cycle and when a Request's time reaches 0, the Webprocessor lets go of the Request by setting the filled variable to false.
 /// @param clock_cycle The integer current clock cycle the program is on. Used for formatting the console output.
@@ -115,7 +115,7 @@ void webprocessor::dec_time(int clock_cycle, int idx){
     }
 }
 
-/// @brief Webprocessor add_request() function accepts and holds a Request in the Webprocessor.
+/// @brief Webprocessor add_request(request r) function accepts and holds a Request in the Webprocessor.
 ///
 /// Accepts a Request and the Webprocessor inherits all the attributes of a Request. Webprocessor's filled variable is also set to true because it accepts a Request.
 /// @param r The Request object that the Webprocessor accept and will hold.
@@ -128,7 +128,8 @@ void webprocessor::add_request(request r){
 
 /// @brief Request object constructor.
 ///
-/// A Re
+/// A Webserver object is a vector of integer size sz that hold Webprocessors. The constructor populates the Webserver object with Webprocessor instances.
+/// @param sz The integer size of the Webserver vector.
 webserver::webserver(int sz)
 {
     for(int i = 0; i < sz; i++){
@@ -137,13 +138,20 @@ webserver::webserver(int sz)
     }
 }
 
-//template <class X>
+/// @brief Webserver access(unsigned int idx) function returns the Webprocessor that was in index idx of the Webserver.
+///
+/// The access(unsigned int idx) function is used to access the Webprocessor stored in index idx of the Webserver object to manipulate the Webprocessor.
+/// @param idx The unsigned integer index that the Webprocessor is stored at in the Webserver.
+/// @returns Webprocessor object.
 webprocessor* webserver::access(unsigned int idx){
     return &arr[idx];
 }
 
-// to find next free web processor
-//template <class X>
+/// @brief Webserver check_next_free_index() function returns the first index where Webprocessor is not filled.
+///
+/// This function returns the first index where Webprocessor is not filled. This is used to find the next index at which to insert a new Request object from the request queue.
+/// @returns Integer index that is free.
+/// @returns -1 if Webserver is full with Requests.
 int webserver::check_next_free_index(){
     for(int i =0; i< arr.size(); i++){
         if(!arr[i].get_filled()){
@@ -153,7 +161,10 @@ int webserver::check_next_free_index(){
     return -1;
 }
 
-//template <class X>
+/// @brief Webserver decrement_all_request_time(int c) decrements the processing time of all Requests that are in the Webprocessors or the Webserver.
+///
+/// The decrement_all_request_time(int c) function decrements the processing time of all Requests that are in the Webprocessors or the Webserver by 1 at each clock cycle. This is the processing period of the Requests and all the times will eventually become 0, at which the Webprocessor will release that Request.
+/// @param c The integer clock cycle iteration.
 void webserver::decrement_all_request_time(int c){
     for(int i = 0; i < arr.size(); i++){
         if(arr[i].get_filled()){
@@ -162,6 +173,11 @@ void webserver::decrement_all_request_time(int c){
     }
 }
 
+/// @brief Webprocessor get_ip_out() function returns whether the is currently holding a Request or not.
+///
+/// Returns whether the is currently holding a Request or not in the current clock cycle.
+/// @returns true if Webprocessor contains a Request.
+/// @returns false if Webprocessor does not contain a Request.
 bool webserver::are_all_processors_empty(){
     for(int i = 0; i< arr.size(); i++){
         if(arr[i].get_filled()){
@@ -170,19 +186,3 @@ bool webserver::are_all_processors_empty(){
     }
     return true;
 }
-
-/*
-int main(){
-    // make webserver queue
-    webserver<webprocessor> w(3); // webserver is just a queue that contains webprocessors
-    request one;
-    request two;
-    request three;
-    //cout << two.get_time() << endl;
-    w.access(0).processing(two); // TO MAKE A PROCESSOR IN INDEX 1 PROCESS A REQUEST
-    w.access(1).processing(one);
-    w.check_next_free_index();
-    w.access(2).processing(three);
-    return 0;
-    
-}*/
