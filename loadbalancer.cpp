@@ -15,7 +15,9 @@ int add_request_time(){
     return (5 + ( std::rand() % ( 1001 ) ));
 }
 
-
+/// @brief The main function asks for the user prompt of server numbers and the run time/clock cycles. 
+///
+/// To compile, type "g++ -std=c++17 *.cpp" in the terminal and press Enter. To run, type "./a.out" in the terminal and press Enter. Then, the user will be asked to type in the number of servers and the run time.
 int main(){
 
     // user prompt
@@ -29,7 +31,7 @@ int main(){
     cin >> run_time;*/
 
     int servers_num = 10;
-    int run_time = 100;
+    int run_time = 1000000;
 
     // create request queue
     queue<request> request_q;
@@ -69,7 +71,7 @@ int main(){
 
         // if no webprocessor in the webserver is free
         if(free_index == -1){
-            cout << "Wait, the web server is full" << endl;
+            //cout << "Wait, the web server is full" << endl;
         }
 
         // if a webprocessor is free, pop a request from the request queue and put it in that webprocessor
