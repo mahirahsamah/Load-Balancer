@@ -62,9 +62,7 @@ class webserver{
 
         int check_next_free_index();
 
-        int get_size(){
-            return arr.size();
-        }
+        int get_size();
 
         void decrement_all_request_time(int clock_cycle);
         

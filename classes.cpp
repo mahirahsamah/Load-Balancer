@@ -11,7 +11,7 @@ using std::endl;
 /// @brief generate_IP_in() function generates a random string of octets.
 ///
 /// Generates a random IP address that a Request uses as its incoming IP address.
-/// @returns String incoming IP address.
+/// @returns Incoming IP address (string).
 string generate_IP_in(){
     string one = to_string(rand() % 256);
     string two = to_string(rand() % 256);
@@ -24,7 +24,7 @@ string generate_IP_in(){
 /// @brief generate_IP_out() function generates a random string of octets.
 ///
 /// Generates a random IP address that a Request uses as its outgoing IP address.
-/// @returns String outgoing IP address.
+/// @returns Outgoing IP address (string).
 string generate_IP_out(){
     string one = to_string(rand() % 256);
     string two = to_string(rand() % 256);
@@ -37,9 +37,9 @@ string generate_IP_out(){
 /// @brief generate_time() function generates a random integer.
 ///
 /// Generates the time that a Request takes to process.
-/// @returns Integer time.
+/// @returns Time (integer).
 int generate_time(){
-    return (5 + ( std::rand() % ( 64 - 5 + 1 ) )); // the max time a request can be run is 1 minute
+    return (5 + ( std::rand() % ( 64 - 5 + 1 ) ));
 }
 
 /// @brief Request object constructor.
@@ -54,7 +54,7 @@ request::request(){
 /// @brief Request get_time() function returns the processing time of the request.
 ///
 /// Returns a random integer time that a Request takes to process.
-/// @returns Integer Request processing time.
+/// @returns Request processing time (integer).
 int request::get_time(){
     return time;
 }
@@ -62,15 +62,15 @@ int request::get_time(){
 /// @brief Request get_ip_in() function returns a random string of octets.
 ///
 /// Returns a random IP address that a Request uses as its incoming IP address.
-/// @returns String incoming IP address.
+/// @returns Incoming IP address (string).
 string request::get_ip_in(){
     return ip_in;
 }
 
 /// @brief Request get_ip_out() function returns a random string of octets.
 ///
-/// Returns a random IP address that a Request uses as its incoming IP address.
-/// @returns String incoming IP address.
+/// Returns a random IP address that a Request uses as its outgoing IP address.
+/// @returns Outgoing IP address (string).
 string request::get_ip_out(){
     return ip_out;
 }
@@ -97,7 +97,7 @@ bool webprocessor::get_filled(){
 /// @brief Webprocessor get_time() function returns the processing time of the Request the Webprocessor is holding.
 ///
 /// Returns an integer processing time of a Request that is in the Webprocessor.
-/// @returns Integer Request processing time.
+/// @returns Request processing time (integer).
 int webprocessor::get_time(){
     return time;
 }
@@ -150,7 +150,7 @@ webprocessor* webserver::access(unsigned int idx){
 /// @brief Webserver check_next_free_index() function returns the first index where Webprocessor is not filled.
 ///
 /// This function returns the first index where Webprocessor is not filled. This is used to find the next index at which to insert a new Request object from the request queue.
-/// @returns Integer index that is free.
+/// @returns Index that is free (integer).
 /// @returns -1 if Webserver is full with Requests.
 int webserver::check_next_free_index(){
     for(int i =0; i< arr.size(); i++){
@@ -164,7 +164,7 @@ int webserver::check_next_free_index(){
 /// @brief Webserver decrement_all_request_time(int c) decrements the processing time of all Requests that are in the Webprocessors or the Webserver.
 ///
 /// The decrement_all_request_time(int c) function decrements the processing time of all Requests that are in the Webprocessors or the Webserver by 1 at each clock cycle. This is the processing period of the Requests and all the times will eventually become 0, at which the Webprocessor will release that Request.
-/// @param c The integer clock cycle iteration.
+/// @param c The current integer clock cycle iteration.
 void webserver::decrement_all_request_time(int c){
     for(int i = 0; i < arr.size(); i++){
         if(arr[i].get_filled()){
@@ -185,4 +185,12 @@ bool webserver::are_all_processors_empty(){
         }
     }
     return true;
+}
+
+/// @brief Webserver get_size function finds the size of the Webserver vector.
+///
+/// This function finds the size of the std::vector structure using the size() standard library function, or in other words, it returns how many Webprocessors there are in the Webserver.
+/// @returns Size of the Webserver vector (integer).
+int webserver::get_size(){
+    return arr.size();
 }
