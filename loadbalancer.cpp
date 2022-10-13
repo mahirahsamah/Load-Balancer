@@ -14,6 +14,13 @@ int add_request_time(){
 
     return (5 + ( std::rand() % ( 1001 ) ));
 }
+/*
+void Foo() {
+    std::vector<int> v;
+    webserver w;
+// fill the vector up
+    w().swap(v);
+}*/
 
 /// @brief The main function asks for the user prompt of server numbers and the run time/clock cycles. 
 ///
@@ -30,8 +37,8 @@ int main(){
     cout << "Enter the run time: ";
     cin >> run_time;*/
 
-    int servers_num = 10;
-    int run_time = 1000000;
+    int servers_num = 40;
+    int run_time = 15000;
 
     // create request queue
     queue<request> request_q;
@@ -62,7 +69,7 @@ int main(){
 
         // check if request queue is empty at any point
         if(request_q.empty() && web_server.are_all_processors_empty()){
-            cout << "All requests have been completed... exiting..." << endl;
+            //cout << "All requests have been completed... exiting..." << endl;
             break;
         }
 
@@ -75,7 +82,7 @@ int main(){
         }
 
         // if a webprocessor is free, pop a request from the request queue and put it in that webprocessor
-        else{
+        else if(free_index != -1 && !request_q.empty() ){
             web_server.access(free_index)->add_request(request_q.front());
             request_q.pop();
         }
@@ -98,6 +105,9 @@ int main(){
 
     // display the time taken
     cout << "Time taken: " << duration << endl;
+
+    //Foo();
+    //web_server.clear();
 
     return 0;
 }

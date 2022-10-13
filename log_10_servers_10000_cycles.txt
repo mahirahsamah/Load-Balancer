@@ -2858,5 +2858,5 @@ At 9980, Processor 9 completed request from 131.154.212.56 to 221.61.96.16
 At 9995, Processor 2 completed request from 156.71.87.222 to 152.112.2.180
 At 9999, Processor 8 completed request from 24.16.188.175 to 80.190.146.35
 Ending queue size: 416
-Range of task times: 5 to 60 cycles
-Time taken: 1103923700
+Range of request processing times: 5 to 60 cycles
+Time taken: 335224900

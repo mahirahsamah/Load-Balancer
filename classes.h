@@ -53,10 +53,13 @@ class webprocessor{
 /// A Webserver is a vector that contains Webprocessor objects. The Webserver class can loop through its vector to check which Webprocessors are free, allows all Webprocessors to process Requests' times, and if all Webprocessors are idle.
 class webserver{
 
-    std::vector<webprocessor> arr;
+    
 
     public:
-        webserver(int size = 0);
+
+        std::vector<webprocessor> arr;
+        ~webserver();
+        webserver(int size);
 
         webprocessor* access(unsigned int idx);
 
@@ -67,6 +70,10 @@ class webserver{
         void decrement_all_request_time(int clock_cycle);
         
         bool are_all_processors_empty();
+
+        void clear(){
+            arr.clear();
+        }
 };
 
 #endif

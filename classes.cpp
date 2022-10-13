@@ -13,10 +13,15 @@ using std::endl;
 /// Generates a random IP address that a Request uses as its incoming IP address.
 /// @returns Incoming IP address (string).
 string generate_IP_in(){
-    string one = to_string(rand() % 256);
-    string two = to_string(rand() % 256);
-    string three = to_string(rand() % 256);
-    string four = to_string(rand() % 256);
+    string one = "";
+    string two = "";
+    string three = "";
+    string four ="";
+
+    one = to_string(rand() % 256);
+    two = to_string(rand() % 256);
+    three = to_string(rand() % 256);
+    four = to_string(rand() % 256);
 
     return one + '.' + two + '.' + three + '.' + four;
 }
@@ -26,10 +31,15 @@ string generate_IP_in(){
 /// Generates a random IP address that a Request uses as its outgoing IP address.
 /// @returns Outgoing IP address (string).
 string generate_IP_out(){
-    string one = to_string(rand() % 256);
-    string two = to_string(rand() % 256);
-    string three = to_string(rand() % 256);
-    string four = to_string(rand() % 256);
+    string one = "";
+    string two = "";
+    string three = "";
+    string four ="";
+
+    one = to_string(rand() % 256);
+    two = to_string(rand() % 256);
+    three = to_string(rand() % 256);
+    four = to_string(rand() % 256);
 
     return one + '.' + two + '.' + three + '.' + four;
 }
@@ -124,6 +134,10 @@ void webprocessor::add_request(request r){
     ip_in = r.get_ip_in();
     ip_out = r.get_ip_out();
     time = r.get_time();
+}
+
+webserver::~webserver(){
+    //delete[] arr;
 }
 
 /// @brief Request object constructor.
