@@ -6,6 +6,10 @@
 using namespace std;
 using namespace std::chrono;
 
+/// @brief add_request_time() function generates a random integer.
+///
+/// Generates the time that a Request .
+/// @returns Time (integer).
 int add_request_time(){
 
     return (5 + ( std::rand() % ( 1001 ) ));
